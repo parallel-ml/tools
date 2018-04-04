@@ -14,6 +14,8 @@ MACAddress="${MACAddress}|B8:27:EB:1A:C5:E4"
 MACAddress="${MACAddress}|B8:27:EB:C8:62:3B"
 MACAddress="${MACAddress}|B8:27:EB:CE:4D:28"
 MACAddress="${MACAddress}|B8:27:EB:EF:71:26"
+MACAddress="${MACAddress}|B8:27:EB:07:94:17"
+MACAddress="${MACAddress}|B8:27:EB:80:49:FC"
 #MACAddress="${MACAddress}|"
 
 

@@ -1,7 +1,7 @@
 #!/bin/python
 
 
-# BASH Version: $ pssh -t 5 -h ips -l pi -A -i "uptime"
+# BASH Version: $ pssh -t 10 -h ips -l pi -A -i "uptime"
 
 
 from pssh.pssh_client import ParallelSSHClient
