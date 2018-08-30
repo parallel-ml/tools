@@ -5,18 +5,21 @@ from util import ssh_client_output
 
 HOME = os.environ['HOME']
 
+# loop through all hosts
 hosts = []
 with open("ip", "r") as f:
     for line in f:
         hosts.append(line.rstrip())
 
+# load ssh private key
 pkey = load_private_key(HOME + '/.ssh/id_rsa_pis')
 client = ParallelSSHClient(hosts, user='pi', pkey=pkey)
 
+# execute commands to Pis
 output = client.run_command('chmod -R 777 $HOME/automate | rm -rf $HOME/automate')
 ssh_client_output(output)
 
-output = client.run_command('git clone https://github.com/parallel-ml/tools.git $HOME/automate')
+output = client.run_command('git clone https://github.com/parallel-ml/tools.git $HOME/automate/tools')
 ssh_client_output(output)
 
 output = client.run_command('bash $HOME/automate/tools/scripts/setup.sh')

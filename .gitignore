@@ -112,3 +112,5 @@ ENV/
 *.DS_Store
 
 credentials/
+ip
+node-ip-mapping.json

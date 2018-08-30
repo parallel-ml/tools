@@ -8,3 +8,13 @@ pip install -r requirements.txt
 ```
 ## Credentials
 Set up SSH private key under `$HOME/.ssh/id_rsa_pis`
+
+## How To Use
+Collect all devices IP addresses.
+```bash
+./scripts/find_ip
+```
+Run Raspberry Pi setup through Python client.
+```bash
+python pi_setup.py
+```
