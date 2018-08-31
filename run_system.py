@@ -3,8 +3,7 @@ from pssh.utils import load_private_key
 from util import ssh_client_output
 import argparse
 import os
-import json
-import subprocess
+from ConfigParser import RawConfigParser
 
 # parse command line argument to adapt to different systems
 parser = argparse.ArgumentParser(description='Configuration for distributed system.')
@@ -22,6 +21,9 @@ config_candidates = {
     'alexnet_7': 7,
 }
 
+# python config file parser
+config_parser = RawConfigParser()
+
 # find all available hosts
 hosts = []
 with open("ip", "r") as f:
@@ -35,24 +37,29 @@ if cfg not in config_candidates:
 if len(hosts) < config_candidates[cfg]:
     raise BaseException('The system does not have enough devices. ')
 
+config_parser.add_section('Node Config')
+config_parser.set('Node Config', 'system', SYSTEM)
+config_parser.set('Node Config', 'model', MODEL)
+
 # map node to ip
 node_ip_mapping = dict()
 for n in range(1, config_candidates[cfg] + 1):
     node_ip_mapping.update({'n' + str(n): hosts[n - 1]})
-with open(CUR + '/node-ip-mapping.json', 'w') as fp:
-    json.dump(node_ip_mapping, fp)
-hosts = node_ip_mapping.values()
 
-for host in hosts:
-    cmd = ['scp', '-i', HOME + '/.ssh/id_rsa_pis', CUR + '/node-ip-mapping.json', 'pi@' + host + ':/home/pi/']
-    subprocess.Popen(cmd)
+# write ip to node mapping to config file
+config_parser.add_section('Node IP')
+for node, ip in node_ip_mapping.items():
+    config_parser.set('Node IP', ip, node)
+with open('node.cfg', 'wb') as configfile:
+    config_parser.write(configfile)
+hosts = node_ip_mapping.values()
 
 # ssh commands
 pkey = load_private_key(HOME + '/.ssh/id_rsa_pis')
 client = ParallelSSHClient(hosts, user='pi', pkey=pkey)
 
 # put node mapping
-client.copy_remote_file('node-ip-mapping.json', 'node-ip-mapping.json')
+client.copy_remote_file('node.cfg', 'node.cfg')
 
 if args.update:
     output = client.run_command('bash $HOME/automate/tools/scripts/update.sh')

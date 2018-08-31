@@ -113,4 +113,4 @@ ENV/
 
 credentials/
 ip
-node-ip-mapping.json
+*.cfg
