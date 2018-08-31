@@ -48,8 +48,10 @@ for n in range(1, config_candidates[cfg] + 1):
 
 # write ip to node mapping to config file
 config_parser.add_section('Node IP')
+config_parser.add_section('IP Node')
 for node, ip in node_ip_mapping.items():
-    config_parser.set('Node IP', ip, node)
+    config_parser.set('IP Node', ip, node)
+    config_parser.set('Node IP', node, ip)
 with open('node.cfg', 'wb') as configfile:
     config_parser.write(configfile)
 hosts = node_ip_mapping.values()
