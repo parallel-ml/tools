@@ -17,8 +17,8 @@ with open("ip", "r") as f:
 pkey = load_private_key(HOME + '/.ssh/id_rsa_pis')
 client = ParallelSSHClient(hosts, user='pi', pkey=pkey)
 
-# TODO: terminate the system here
-output = client.run_command('...')
+# terminate the running program by soft terminate signal
+output = client.run_command('kill -15 "$(pgrep python)"')
 ssh_client_output(output)
 
 config = ConfigParser.ConfigParser()
