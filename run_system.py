@@ -3,6 +3,8 @@ from pssh.utils import load_private_key
 from util import ssh_client_output
 import argparse
 import os
+import time
+from threading import Thread
 from ConfigParser import RawConfigParser
 
 # parse command line argument to adapt to different systems
@@ -67,8 +69,21 @@ if args.update:
     output = client.run_command('bash $HOME/automate/tools/scripts/update.sh')
     ssh_client_output(output)
 
-server_hosts = ParallelSSHClient(hosts[1:], user='pi', pkey=pkey)
-server_hosts.run_command('bash $HOME/automate/tools/scripts/run_system server')
 
-client_hosts = ParallelSSHClient(hosts[:1], user='pi', pkey=pkey)
-server_hosts.run_command('bash $HOME/automate/tools/scripts/run_system')
+def start_server(ips):
+    server_hosts = ParallelSSHClient(ips, user='pi', pkey=pkey)
+    servers_outputs = server_hosts.run_command('bash $HOME/automate/tools/scripts/run_system.sh server')
+    ssh_client_output(servers_outputs)
+
+
+def start_client(ips):
+    client_host = ParallelSSHClient(ips, user='pi', pkey=pkey)
+    client_outputs = client_host.run_command('bash $HOME/automate/tools/scripts/run_system.sh')
+    ssh_client_output(client_outputs)
+
+
+client, servers = hosts[:1], hosts[1:]
+Thread(target=start_server, args=(servers,)).start()
+time.sleep(30)
+Thread(target=start_client, args=(client,)).start()
+
