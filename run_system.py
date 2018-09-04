@@ -17,7 +17,7 @@ args = parser.parse_args()
 HOME, CUR = os.environ['HOME'], os.environ['PWD']
 MODEL, SYSTEM = args.model, args.system
 config_candidates = {
-    'test_1': 1,
+    'test_2': 2,
     'alexnet_7': 7,
 }
 
@@ -60,8 +60,8 @@ hosts = node_ip_mapping.values()
 pkey = load_private_key(HOME + '/.ssh/id_rsa_pis')
 client = ParallelSSHClient(hosts, user='pi', pkey=pkey)
 
-# put node mapping
-client.copy_remote_file('node.cfg', 'node.cfg')
+# put node config
+client.copy_file('node.cfg', 'node.cfg')
 
 if args.update:
     output = client.run_command('bash $HOME/automate/tools/scripts/update.sh')

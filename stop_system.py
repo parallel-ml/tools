@@ -22,9 +22,9 @@ output = client.run_command('kill -15 "$(pgrep python)"')
 ssh_client_output(output)
 
 config = ConfigParser.ConfigParser()
-config.read('node.ckg')
+config.read('node.cfg')
 
 for n in range(1, int(config.get('Node Config', 'system', 1)) + 1):
     node_id = 'n' + str(n)
     ip = config.get('Node IP', node_id, 0)
-    subprocess.Popen(['scp', '-i', 'pi@' + ip + ':/home/pi/stats', HOME + node_id])
+    subprocess.Popen(['scp', '-i', HOME + '/.ssh/id_rsa_pis', 'pi@' + ip + ':/home/pi/stats', HOME + '/stats/' + node_id])
