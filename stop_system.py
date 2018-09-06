@@ -4,6 +4,7 @@ from util import ssh_client_output
 import os
 import subprocess
 import ConfigParser
+from time import strftime, localtime
 
 HOME = os.environ['HOME']
 
@@ -24,10 +25,15 @@ ssh_client_output(output)
 config = ConfigParser.ConfigParser()
 config.read('node.cfg')
 
+model, system = config.get('Node Config', 'model', 0), config.get('Node Config', 'system', 0)
+dir_name = '/' + model + '-' + system + '-' + strftime("%Y-%m-%d %H:%M:%S", localtime()) + '/'
+subprocess.Popen(['mkdir', HOME + '/stats' + dir_name])
+
 for n in range(1, int(config.get('Node Config', 'system', 1)) + 1):
     node_id = 'n' + str(n)
     ip = config.get('Node IP', node_id, 0)
-    subprocess.Popen(['scp', '-i', HOME + '/.ssh/id_rsa_pis', 'pi@' + ip + ':/home/pi/stats', HOME + '/stats/' + node_id])
+    subprocess.Popen(
+        ['scp', '-i', HOME + '/.ssh/id_rsa_pis', 'pi@' + ip + ':/home/pi/stats', HOME + '/stats' + dir_name + node_id])
 
 # terminate the running program by soft terminate signal
 output = client.run_command('kill -9 "$(pgrep python)"')
