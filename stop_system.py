@@ -29,7 +29,7 @@ model, system = config.get('Node Config', 'model', 0), config.get('Node Config',
 dir_name = '/' + model + '-' + system + '-' + strftime("%Y-%m-%d %H:%M:%S", localtime()) + '/'
 subprocess.Popen(['mkdir', HOME + '/stats' + dir_name])
 
-for n in range(1, int(config.get('Node Config', 'system', 1)) + 1):
+for n in range(1, len(list(config.items('Node IP'))) + 1):
     node_id = 'n' + str(n)
     ip = config.get('Node IP', node_id, 0)
     subprocess.Popen(

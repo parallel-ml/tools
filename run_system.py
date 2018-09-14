@@ -18,9 +18,9 @@ MODEL, SYSTEM = args.model, args.system
 config_candidates = {
     'test_2': 2,
     'alexnet_7': 7,
-    'alexnet_channel_1': 5,
-    'alexnet_filter_1': 5,
-    'alexnet_xy_1': 5
+    'alexnet_channel_3': 5,
+    'alexnet_filter_3': 5,
+    'alexnet_xy_3': 5
 }
 
 # python config file parser
