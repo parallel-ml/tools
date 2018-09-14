@@ -10,10 +10,7 @@ from ConfigParser import RawConfigParser
 # parse command line argument to adapt to different systems
 parser = argparse.ArgumentParser(description='Configuration for distributed system.')
 parser.add_argument('model', help='This argument specifies the eep learning model for the system. E.g, alexnet. ')
-parser.add_argument('system', help='This argument specifies the system setting. E.g, node_8. ')
-parser.add_argument('-u', '--update', help='This argument specifies whether to update code on host device or not. '
-                                           'The value is default to False, but it should be True if the device is '
-                                           'running for the first time. ', default=False)
+parser.add_argument('system', help='This argument specifies the system setting. E.g, 8. ')
 args = parser.parse_args()
 
 HOME, CUR = os.environ['HOME'], os.environ['PWD']
@@ -21,6 +18,9 @@ MODEL, SYSTEM = args.model, args.system
 config_candidates = {
     'test_2': 2,
     'alexnet_7': 7,
+    'alexnet_channel_1': 5,
+    'alexnet_filter_1': 5,
+    'alexnet_xy_1': 5
 }
 
 # python config file parser
@@ -64,10 +64,6 @@ client = ParallelSSHClient(hosts, user='pi', pkey=pkey)
 
 # put node config
 client.copy_file('node.cfg', 'node.cfg')
-
-if args.update:
-    output = client.run_command('bash $HOME/automate/tools/scripts/update.sh')
-    ssh_client_output(output)
 
 
 def start_server(ips):
