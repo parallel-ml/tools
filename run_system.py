@@ -11,17 +11,22 @@ from ConfigParser import RawConfigParser
 parser = argparse.ArgumentParser(description='Configuration for distributed system.')
 parser.add_argument('model', help='This argument specifies the eep learning model for the system. E.g, alexnet. ')
 parser.add_argument('system', help='This argument specifies the system setting. E.g, 8. ')
+parser.add_argument('block', help='This argument specifies the block used for the system. E.g, conv1. ')
 args = parser.parse_args()
 
 HOME, CUR = os.environ['HOME'], os.environ['PWD']
-MODEL, SYSTEM = args.model, args.system
+MODEL, SYSTEM, BLOCK = args.model, args.system, args.block
 config_candidates = {
     'test_2': 2,
     'alexnet_7': 7,
     'alexnet_1': 2,
     'alexnet_channel_3': 5,
     'alexnet_filter_3': 5,
-    'alexnet_xy_3': 5
+    'alexnet_xy_3': 5,
+    'vgg16_1': 2,
+    'vgg16_channel_3': 5,
+    'vgg16_filter_3': 5,
+    'vgg16_xy_3': 5,
 }
 
 # python config file parser
@@ -43,6 +48,7 @@ if len(hosts) < config_candidates[cfg]:
 config_parser.add_section('Node Config')
 config_parser.set('Node Config', 'system', SYSTEM)
 config_parser.set('Node Config', 'model', MODEL)
+config_parser.set('Node Config', 'block', BLOCK)
 
 # map node to ip
 node_ip_mapping = dict()
