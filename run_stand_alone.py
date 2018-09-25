@@ -56,13 +56,13 @@ client.copy_file('node.cfg', 'node.cfg')
 
 def start_server(ips):
     server_hosts = ParallelSSHClient(ips, user='pi', pkey=pkey)
-    servers_outputs = server_hosts.run_command('bash $HOME/stand-alone/scripts/run_system.sh server')
+    servers_outputs = server_hosts.run_command('bash $HOME/automate/tools/scripts/run_stand_alone.sh server')
     ssh_client_output(servers_outputs)
 
 
 def start_client(ips):
     client_host = ParallelSSHClient(ips, user='pi', pkey=pkey)
-    client_outputs = client_host.run_command('bash $HOME/stand-alone/scripts/run_system.sh')
+    client_outputs = client_host.run_command('bash $HOME/automate/tools/scripts/run_stand_alone.sh')
     ssh_client_output(client_outputs)
 
 
