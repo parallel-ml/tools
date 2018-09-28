@@ -5,6 +5,7 @@ import os
 import subprocess
 import ConfigParser
 from time import strftime, localtime
+import time
 
 HOME = os.environ['HOME']
 
@@ -25,7 +26,7 @@ ssh_client_output(output)
 config = ConfigParser.ConfigParser()
 config.read('node.cfg')
 
-dir_name = strftime("%Y-%m-%d %H:%M:%S", localtime()) + '/'
+dir_name = '/' + strftime("%Y-%m-%d %H:%M:%S", localtime()) + '/'
 subprocess.Popen(['mkdir', HOME + '/stats' + dir_name])
 
 for n in range(1, len(list(config.items('Node IP'))) + 1):
@@ -36,4 +37,10 @@ for n in range(1, len(list(config.items('Node IP'))) + 1):
 
 # terminate the running program by soft terminate signal
 output = client.run_command('kill -9 "$(pgrep python)"')
+ssh_client_output(output)
+
+time.sleep(5)
+
+# clean stats from last time
+output = client.run_command('rm $HOME/stats')
 ssh_client_output(output)
