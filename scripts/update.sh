@@ -11,3 +11,9 @@ if [ -d "$HOME/stand-alone" ]; then
     rm -rf $HOME/stand-alone
 fi
 git clone https://github.com/parallel-ml/stand-alone.git $HOME/stand-alone
+
+if [ -d "$HOME/model-specific" ]; then
+    rm -rf $HOME/model-specific
+fi
+git clone https://github.com/parallel-ml/model-specific.git $HOME/model-specific
+
