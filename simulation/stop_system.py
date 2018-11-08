@@ -4,13 +4,15 @@ from util import ssh_client_output
 import os
 import subprocess
 import ConfigParser
+import time
 from time import strftime, localtime
+from constants import IP_PATH, NODE_CONFIG
 
 HOME = os.environ['HOME']
 
 # find all available hosts
 hosts = []
-with open("ip", "r") as f:
+with open(IP_PATH, "r") as f:
     for line in f:
         hosts.append(line.rstrip())
 
@@ -23,7 +25,7 @@ output = client.run_command('kill -15 "$(pgrep python)"')
 ssh_client_output(output)
 
 config = ConfigParser.ConfigParser()
-config.read('node.cfg')
+config.read(NODE_CONFIG)
 
 model, system = config.get('Node Config', 'model', 0), config.get('Node Config', 'system', 0)
 dir_name = '/' + model + '-' + system + '-' + strftime("%Y-%m-%d %H:%M:%S", localtime()) + '/'
@@ -37,4 +39,10 @@ for n in range(1, len(list(config.items('Node IP'))) + 1):
 
 # terminate the running program by soft terminate signal
 output = client.run_command('kill -9 "$(pgrep python)"')
+ssh_client_output(output)
+
+time.sleep(5)
+
+# clean stats from last time
+output = client.run_command('rm $HOME/stats')
 ssh_client_output(output)

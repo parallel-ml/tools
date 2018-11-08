@@ -6,12 +6,13 @@ import subprocess
 import ConfigParser
 from time import strftime, localtime
 import time
+from constants import IP_PATH, NODE_CONFIG
 
 HOME = os.environ['HOME']
 
 # find all available hosts
 hosts = []
-with open("ip", "r") as f:
+with open(IP_PATH, "r") as f:
     for line in f:
         hosts.append(line.rstrip())
 
@@ -24,7 +25,7 @@ output = client.run_command('kill -15 "$(pgrep python)"')
 ssh_client_output(output)
 
 config = ConfigParser.ConfigParser()
-config.read('node.cfg')
+config.read(NODE_CONFIG)
 
 dir_name = '/' + strftime("%Y-%m-%d %H:%M:%S", localtime()) + '/'
 subprocess.Popen(['mkdir', HOME + '/stats' + dir_name])

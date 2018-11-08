@@ -2,12 +2,13 @@ from pssh.pssh_client import ParallelSSHClient
 from pssh.utils import load_private_key
 import os
 from util import ssh_client_output
+from constants import IP_PATH, NODE_CONFIG
 
 HOME = os.environ['HOME']
 
 # loop through all hosts
 hosts = []
-with open("ip", "r") as f:
+with open(IP_PATH, "r") as f:
     for line in f:
         hosts.append(line.rstrip())
 

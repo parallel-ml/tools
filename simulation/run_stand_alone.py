@@ -6,6 +6,7 @@ import os
 import time
 from threading import Thread
 from ConfigParser import RawConfigParser
+from constants import IP_PATH, NODE_CONFIG
 
 parser = argparse.ArgumentParser('Run layer with customized input and kernal.')
 parser.add_argument('channel', type=int, help='Channel size.')
@@ -23,7 +24,7 @@ config_parser = RawConfigParser()
 
 # find all available hosts
 hosts = []
-with open("ip", "r") as f:
+with open(IP_PATH, "r") as f:
     for line in f:
         hosts.append(line.rstrip())
 
@@ -42,7 +43,7 @@ config_parser.add_section('IP Node')
 for node, ip in node_ip_mapping.items():
     config_parser.set('IP Node', ip, node)
     config_parser.set('Node IP', node, ip)
-with open('node.cfg', 'wb') as configfile:
+with open(NODE_CONFIG, 'wb') as configfile:
     config_parser.write(configfile)
 hosts = node_ip_mapping.values()
 
@@ -51,7 +52,7 @@ pkey = load_private_key(HOME + '/.ssh/id_rsa_pis')
 client = ParallelSSHClient(hosts, user='pi', pkey=pkey)
 
 # put node config
-client.copy_file('node.cfg', 'node.cfg')
+client.copy_file(NODE_CONFIG, 'node.cfg')
 
 
 def start_server(ips):
