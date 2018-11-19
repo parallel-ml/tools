@@ -23,6 +23,7 @@ config_candidates = {
     'alexnet_7': 7,
     'vgg16_9': 9,
     'vgg16_11': 11,
+    'vgg16_9-sequential': 9,
 }
 
 # python config file parser
@@ -37,6 +38,7 @@ with open(IP_PATH, "r") as f:
 # check if config is valid
 cfg = MODEL + '_' + SYSTEM
 if cfg not in config_candidates:
+    print config_candidates
     raise BaseException('The program cannot find appropriate system setting with the model chosen.')
 if len(hosts) < config_candidates[cfg]:
     raise BaseException('The system does not have enough devices. ')
