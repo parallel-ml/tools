@@ -19,11 +19,15 @@ MODEL, SYSTEM = args.model, args.system
 config_candidates = {
     'test_2': 2,
     'alexnet_5': 5,
+    'alexnet_5-null': 5,
     'alexnet_6': 6,
+    'alexnet_6-null': 6,
     'alexnet_7': 7,
     'vgg16_9': 9,
     'vgg16_11': 11,
     'vgg16_9-sequential': 9,
+    'xception_5-C-channel': 5,
+    'xception_5-C-filter': 5,
 }
 
 # python config file parser
