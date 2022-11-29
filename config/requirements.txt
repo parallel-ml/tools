@@ -23,7 +23,7 @@ memory-profiler==0.54.0
 mock==2.0.0
 numpy==1.14.3
 pbr==3.1.1
-protobuf==3.5.1
+protobuf==3.18.3
 pyasn1==0.4.2
 pycparser==2.18
 pydot==1.2.4
